@@ -7,6 +7,7 @@ import {
   candidateClaims,
   claimEvidenceLinks,
   experimentRecords,
+  knowledgeGaps,
 } from './schema';
 import { v4 as uuid } from 'uuid';
 
@@ -199,10 +200,53 @@ export async function seedSmartAgricultureDataset() {
     });
   }
 
+  // Create knowledge gaps
+  const gaps = [
+    {
+      description: 'How does model perform with extreme weather events not seen in training data?',
+      priority: 'critical',
+    },
+    {
+      description: 'What is the exact breakdown of soil sensor calibration procedures?',
+      priority: 'high',
+    },
+    {
+      description: 'Missing documentation on API rate limiting strategy and fallback behavior',
+      priority: 'high',
+    },
+    {
+      description: 'No details on how to handle sensor failures in production',
+      priority: 'high',
+    },
+    {
+      description: 'Unclear deployment process and rollback procedures',
+      priority: 'medium',
+    },
+    {
+      description: 'Limited information on GPU acceleration implementation timeline',
+      priority: 'medium',
+    },
+    {
+      description: 'No cost analysis for data storage at scale',
+      priority: 'low',
+    },
+  ];
+
+  for (const gap of gaps) {
+    await db().insert(knowledgeGaps).values({
+      id: uuid(),
+      projectId,
+      description: gap.description,
+      priority: gap.priority,
+      relatedClaimId: claimIds.length > 0 ? claimIds[0] : null,
+    });
+  }
+
   console.log('✓ Smart Agriculture dataset seeded successfully');
   console.log(`  - Project ID: ${projectId}`);
   console.log(`  - Source events: ${sourceEventIds.length}`);
   console.log(`  - Claims: ${claimIds.length}`);
+  console.log(`  - Knowledge gaps: ${gaps.length}`);
 }
 
 if (require.main === module) {

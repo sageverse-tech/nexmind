@@ -1,0 +1,2 @@
+- [NEXMIND Phase 2 Status](nexmind_phase2_status.md) — Current progress, branch state, uncommitted UI work
+- [Round 2 Requirements](round2_requirements.md) — Complete Phase 2 spec, evaluation rubric, deployment targets
